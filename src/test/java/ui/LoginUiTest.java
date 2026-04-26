@@ -39,6 +39,11 @@ public class LoginUiTest {
     void tearDown() {
         driver.quit();
     }
+    private void loginAsTestUser() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+        loginPage.login("test1@mail.ru", "qwerty321");
+    }
 
     private void login() {
         driver.get("https://coach-platform-nine.vercel.app/login");
@@ -57,10 +62,7 @@ public class LoginUiTest {
 
     @Test
     void successfulLogin() {
-        LoginPage loginPage = new LoginPage(driver);
-
-        loginPage.open();
-        loginPage.login("test1@mail.ru", "qwerty321");
+        loginAsTestUser();
 
         assertTrue(
                 driver.getCurrentUrl().contains("/dashboard"),
@@ -70,10 +72,7 @@ public class LoginUiTest {
 
     @Test
     void createClient() {
-        LoginPage loginPage = new LoginPage(driver);
-
-        loginPage.open();
-        loginPage.login("test1@mail.ru", "qwerty321");
+        loginAsTestUser();
 
         ClientsPage clientsPage = new ClientsPage(driver);
 
@@ -86,10 +85,7 @@ public class LoginUiTest {
     }
     @Test
     void openClientAfterCreate() {
-        LoginPage loginPage = new LoginPage(driver);
-
-        loginPage.open();
-        loginPage.login("test1@mail.ru", "qwerty321");
+        loginAsTestUser();
 
         ClientsPage clientsPage = new ClientsPage(driver);
 
@@ -119,9 +115,7 @@ public class LoginUiTest {
     }
     @Test
     void logout() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-        loginPage.login("test1@mail.ru", "qwerty321");
+        loginAsTestUser();
         driver.findElement(By.xpath("//button[text()='Выйти']")).click();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(d -> d.getCurrentUrl().contains("/login"));
