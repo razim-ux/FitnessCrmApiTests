@@ -130,4 +130,14 @@ public class LoginUiTest {
                 "После logout пользователь должен попасть на страницу логина"
         );
     }
+    @Test
+    void loginWithEmptyFields() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+        loginPage.clickLoginButton();
+        assertTrue(
+                driver.getCurrentUrl().contains("/login"),
+                "При пустых полях пользователь не должен войти"
+        );
+    }
 }

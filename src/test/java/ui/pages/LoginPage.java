@@ -48,4 +48,7 @@ public class LoginPage {
 
         return errorElement.isDisplayed();
     }
+    public void clickLoginButton() {
+        driver.findElement(By.cssSelector("button[type='submit']")).click();
+    }
 }
