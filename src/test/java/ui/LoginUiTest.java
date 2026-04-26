@@ -117,4 +117,17 @@ public class LoginUiTest {
                 "Ошибка Invalid credentials должна отображаться"
         );
     }
+    @Test
+    void logout() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+        loginPage.login("test1@mail.ru", "qwerty321");
+        driver.findElement(By.xpath("//button[text()='Выйти']")).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(d -> d.getCurrentUrl().contains("/login"));
+        assertTrue(
+                driver.getCurrentUrl().contains("/login"),
+                "После logout пользователь должен попасть на страницу логина"
+        );
+    }
 }
