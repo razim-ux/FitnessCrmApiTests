@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebElement;
+import config.TestConfig;
 
 import java.time.Duration;
 
@@ -18,7 +19,7 @@ public class LoginPage {
     }
 
     public void open() {
-        driver.get("https://coach-platform-nine.vercel.app/login");
+        driver.get(TestConfig.BASE_URL + "/login");
     }
 
     public void login(String email, String password) {
@@ -30,7 +31,9 @@ public class LoginPage {
 
         driver.findElement(By.cssSelector("button[type='submit']")).click();
 
-        wait.until(d -> d.getCurrentUrl().contains("/dashboard"));
+        wait.until(d -> d.findElement(By.xpath("//*[contains(text(),'Клиенты')]")));
+
+        System.out.println("CURRENT URL AFTER LOGIN: " + driver.getCurrentUrl());
     }
     public void loginWithoutWaitingDashboard(String email, String password) {
         driver.findElement(By.cssSelector("input[type='email']"))

@@ -39,25 +39,11 @@ public class LoginUiTest {
     void tearDown() {
         driver.quit();
     }
+
     private void loginAsTestUser() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
         loginPage.login("test1@mail.ru", "qwerty321");
-    }
-
-    private void login() {
-        driver.get("https://coach-platform-nine.vercel.app/login");
-
-        driver.findElement(By.cssSelector("input[type='email']"))
-                .sendKeys("test1@mail.ru");
-
-        driver.findElement(By.cssSelector("input[autocomplete='current-password']"))
-                .sendKeys("qwerty321");
-
-        driver.findElement(By.cssSelector("button[type='submit']")).click();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(d -> d.getCurrentUrl().contains("/dashboard"));
     }
 
     @Test
@@ -83,6 +69,7 @@ public class LoginUiTest {
 
         assertTrue(clientsPage.isClientVisible(clientName));
     }
+
     @Test
     void openClientAfterCreate() {
         loginAsTestUser();
@@ -103,32 +90,40 @@ public class LoginUiTest {
                 "Должна открыться страница клиента"
         );
     }
+
     @Test
     void failedLogin() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
         loginPage.loginWithoutWaitingDashboard("test1@mail.ru", "wrongpassword");
+
         assertTrue(
                 loginPage.isInvalidCredentialsErrorVisible(),
                 "Ошибка Invalid credentials должна отображаться"
         );
     }
+
     @Test
     void logout() {
         loginAsTestUser();
+
         driver.findElement(By.xpath("//button[text()='Выйти']")).click();
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(d -> d.getCurrentUrl().contains("/login"));
+
         assertTrue(
                 driver.getCurrentUrl().contains("/login"),
                 "После logout пользователь должен попасть на страницу логина"
         );
     }
+
     @Test
     void loginWithEmptyFields() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
         loginPage.clickLoginButton();
+
         assertTrue(
                 driver.getCurrentUrl().contains("/login"),
                 "При пустых полях пользователь не должен войти"
